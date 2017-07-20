@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="杂谈," />
+  <meta name="keywords" content="JavaScript,定时器," />
 
 
 
@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="这是自建博客的第一篇文章，并不想写关于技术的话题，只想纯粹地写点心中的想法，或者发发牢骚吐吐槽，或者感悟感悟生活，或者……好了，我也不知道自己在胡言乱语些什么~">
-<meta name="keywords" content="杂谈">
+<meta name="description" content="最近做了一个需要实时更新数据的项目，由于某些原因，并没有采取WebSocket的方式，而是用的定时器，每隔10s去请求接口获取数据。然而在这个过程中，不可避免的就遇到清除定时器的问题。 最开始由于习惯问题，虽然是每隔10s就发请求的需求，很明显用setInterval就能满足，但考虑到setInterval的弊端，还是采用setTimeout递归来模拟setInterval完成，这就造成了递归产生">
+<meta name="keywords" content="JavaScript,定时器">
 <meta property="og:type" content="article">
-<meta property="og:title" content="随想">
-<meta property="og:url" content="http://yoursite.com/2017/07/17/my-first-blog/index.html">
+<meta property="og:title" content="js清除定时器">
+<meta property="og:url" content="http://yoursite.com/2017/07/20/js-clear-timer/index.html">
 <meta property="og:site_name" content="Shie">
-<meta property="og:description" content="这是自建博客的第一篇文章，并不想写关于技术的话题，只想纯粹地写点心中的想法，或者发发牢骚吐吐槽，或者感悟感悟生活，或者……好了，我也不知道自己在胡言乱语些什么~">
-<meta property="og:updated_time" content="2017-07-20T08:50:21.000Z">
+<meta property="og:description" content="最近做了一个需要实时更新数据的项目，由于某些原因，并没有采取WebSocket的方式，而是用的定时器，每隔10s去请求接口获取数据。然而在这个过程中，不可避免的就遇到清除定时器的问题。 最开始由于习惯问题，虽然是每隔10s就发请求的需求，很明显用setInterval就能满足，但考虑到setInterval的弊端，还是采用setTimeout递归来模拟setInterval完成，这就造成了递归产生">
+<meta property="og:updated_time" content="2017-07-20T12:32:45.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="随想">
-<meta name="twitter:description" content="这是自建博客的第一篇文章，并不想写关于技术的话题，只想纯粹地写点心中的想法，或者发发牢骚吐吐槽，或者感悟感悟生活，或者……好了，我也不知道自己在胡言乱语些什么~">
+<meta name="twitter:title" content="js清除定时器">
+<meta name="twitter:description" content="最近做了一个需要实时更新数据的项目，由于某些原因，并没有采取WebSocket的方式，而是用的定时器，每隔10s去请求接口获取数据。然而在这个过程中，不可避免的就遇到清除定时器的问题。 最开始由于习惯问题，虽然是每隔10s就发请求的需求，很明显用setInterval就能满足，但考虑到setInterval的弊端，还是采用setTimeout递归来模拟setInterval完成，这就造成了递归产生">
 
 
 
@@ -131,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/17/my-first-blog/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/07/20/js-clear-timer/"/>
 
 
 
 
 
-  <title>随想 | Shie</title>
+  <title>js清除定时器 | Shie</title>
   
 
 
@@ -276,7 +276,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/17/my-first-blog/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/20/js-clear-timer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Shie">
@@ -293,7 +293,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">随想</h1>
+          <h1 class="post-title" itemprop="name headline">js清除定时器</h1>
         
 
         <div class="post-meta">
@@ -305,8 +305,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-17T19:05:27+08:00">
-                2017-07-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-20T19:48:08+08:00">
+                2017-07-20
               </time>
             
 
@@ -321,7 +321,7 @@
               
                 <span class="post-meta-item-text">更新于</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-07-20T16:50:21+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2017-07-20T20:32:45+08:00">
                 2017-07-20
               </time>
             
@@ -340,8 +340,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Life/" itemprop="url" rel="index">
-                    <span itemprop="name">Life</span>
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
                   </a>
                 </span>
 
@@ -374,13 +374,12 @@
       
 
       
-        <p>这是自建博客的第一篇文章，并不想写关于技术的话题，只想纯粹地写点心中的想法，或者发发牢骚吐吐槽，或者感悟感悟生活，或者……好了，我也不知道自己在胡言乱语些什么~</p>
-<a id="more"></a>
-<hr>
-<h3 id="更新于2017-07-19"><a href="#更新于2017-07-19" class="headerlink" title="更新于2017-07-19"></a>更新于2017-07-19</h3><p>最近沉迷于小说，感觉也不是觉得好看，就是想逃避自己的责任，不想做自己该做的事，这么大个人了，想法做法还这么不成熟，真是对自己感到失望。不由得想起自己的高中生涯，也是这样，这样放纵自己，以至于此后想起，每每后悔不已，唉~ 好在今天下定决心结束这堕落的生活，重新振作起来吧！加油，Shie！</p>
-<hr>
-<h3 id="更新于2017-07-20"><a href="#更新于2017-07-20" class="headerlink" title="更新于2017-07-20"></a>更新于2017-07-20</h3><p>趁工作之余，折腾了好久，终于把博客搭好了，昨天上传到了github上，今天绑好了自己的二级域名，开心开心 ：）</p>
-<p>在整个过程中，感觉自己对于DNS解析和git相关知识还有很大欠缺，在这些方面花了很长时间解决问题，接下来应该要试着了解熟悉一下相关的知识。</p>
+        <p>最近做了一个需要实时更新数据的项目，由于某些原因，并没有采取WebSocket的方式，而是用的定时器，每隔10s去请求接口获取数据。然而在这个过程中，不可避免的就遇到清除定时器的问题。</p>
+<p>最开始由于习惯问题，虽然是每隔10s就发请求的需求，很明显用setInterval就能满足，但考虑到setInterval的弊端，还是采用setTimeout递归来模拟setInterval完成，这就造成了递归产生一个又一个的定时器，在切换页面时需要一次清除所有的未知定时器，很头疼。去网上搜索了一下，大致有以下两种解决方案：</p>
+<h3 id="定义全局变量，通过js遍历清除"><a href="#定义全局变量，通过js遍历清除" class="headerlink" title="定义全局变量，通过js遍历清除"></a>定义全局变量，通过js遍历清除</h3><p>这种方法的思想是，在创建定时器时，赋值记录到一个定义好的全局变量对象中，清除时循环全局对象的值，逐一清除，实现代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> pageTimer = &#123;&#125; ; <span class="comment">// 定义全局变量对象</span></div><div class="line"></div><div class="line"><span class="comment">// 赋值模拟</span></div><div class="line"><span class="comment">// 先npm install uuid</span></div><div class="line"><span class="keyword">import</span> uuidV4 <span class="keyword">from</span> <span class="string">'uuid/v4'</span>; <span class="comment">// Generate a v4 UUID (random)</span></div><div class="line"></div><div class="line">loop(params) &#123;</div><div class="line">    <span class="comment">// do something...</span></div><div class="line">    <span class="keyword">const</span> timer = uuidV4(); <span class="comment">// 生成唯一id作为timerKey</span></div><div class="line">    pageTimer[timer] = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123; loop(params); &#125;, <span class="number">10000</span>);</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 清除全部定时器函数</span></div><div class="line">clearTimer() &#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> timer <span class="keyword">in</span> pageTimer) &#123;</div><div class="line">        clearTimeout(pageTimer[timer]);</div><div class="line">        <span class="keyword">delete</span> pageTimer[timer];</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 离开页面时调用清除函数</span></div><div class="line">clearTimer();</div></pre></td></tr></table></figure>
+<h3 id="暴力清除方式"><a href="#暴力清除方式" class="headerlink" title="暴力清除方式"></a>暴力清除方式</h3><p>设置一个比较大的数值，循环清除，模拟代码如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">1</span>; i &lt; <span class="number">1000</span>; i++) &#123;</div><div class="line">    clearTimeout(i);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>总结：实际上暴力清除的方式不可取。首先是你并不能确定自己设置的值就一定比定时器的id大，如果不是，那就无法清除。其次，据说在IE下，定时器返回值是8位数字如：248147094，并且起始值不能确定，而Chrome和firefox下是从1开始的个位数字。所以还是建议采取第一种方法，可控性和可扩展性好，可以自己定制具体的清除逻辑。</p>
 
       
     </div>
@@ -431,7 +430,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/杂谈/" rel="tag"># 杂谈</a>
+            <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          
+            <a href="/tags/定时器/" rel="tag"># 定时器</a>
           
         </div>
       
@@ -444,15 +445,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/07/18/javascript-design-pattern-part-1/" rel="next" title="javascript设计模式与开发实践-第一部分">
+                <i class="fa fa-chevron-left"></i> javascript设计模式与开发实践-第一部分
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/18/javascript-design-pattern-part-1/" rel="prev" title="javascript设计模式与开发实践-第一部分">
-                javascript设计模式与开发实践-第一部分 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -619,7 +620,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#更新于2017-07-19"><span class="nav-number">1.</span> <span class="nav-text">更新于2017-07-19</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新于2017-07-20"><span class="nav-number">2.</span> <span class="nav-text">更新于2017-07-20</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义全局变量，通过js遍历清除"><span class="nav-number">1.</span> <span class="nav-text">定义全局变量，通过js遍历清除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#暴力清除方式"><span class="nav-number">2.</span> <span class="nav-text">暴力清除方式</span></a></li></ol></div>
             
 
           </div>
