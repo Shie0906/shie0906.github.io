@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/07/20/js-clear-timer/index.html">
 <meta property="og:site_name" content="Shie">
 <meta property="og:description" content="最近做了一个需要实时更新数据的项目，由于某些原因，并没有采取WebSocket的方式，而是用的定时器，每隔10s去请求接口获取数据。然而在这个过程中，不可避免的就遇到清除定时器的问题。 最开始由于习惯问题，虽然是每隔10s就发请求的需求，很明显用setInterval就能满足，但考虑到setInterval的弊端，还是采用setTimeout递归来模拟setInterval完成，这就造成了递归产生">
-<meta property="og:updated_time" content="2017-07-20T12:32:45.000Z">
+<meta property="og:updated_time" content="2017-09-05T10:58:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="js清除定时器">
 <meta name="twitter:description" content="最近做了一个需要实时更新数据的项目，由于某些原因，并没有采取WebSocket的方式，而是用的定时器，每隔10s去请求接口获取数据。然而在这个过程中，不可避免的就遇到清除定时器的问题。 最开始由于习惯问题，虽然是每隔10s就发请求的需求，很明显用setInterval就能满足，但考虑到setInterval的弊端，还是采用setTimeout递归来模拟setInterval完成，这就造成了递归产生">
@@ -321,8 +321,8 @@
               
                 <span class="post-meta-item-text">更新于</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-07-20T20:32:45+08:00">
-                2017-07-20
+              <time title="更新于" itemprop="dateModified" datetime="2017-09-05T18:58:20+08:00">
+                2017-09-05
               </time>
             
           </span>
@@ -357,6 +357,17 @@
 
           
           
+             <span id="/2017/07/20/js-clear-timer/" class="leancloud_visitors" data-flag-title="js清除定时器">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
           
 
@@ -376,10 +387,14 @@
       
         <p>最近做了一个需要实时更新数据的项目，由于某些原因，并没有采取WebSocket的方式，而是用的定时器，每隔10s去请求接口获取数据。然而在这个过程中，不可避免的就遇到清除定时器的问题。</p>
 <p>最开始由于习惯问题，虽然是每隔10s就发请求的需求，很明显用setInterval就能满足，但考虑到setInterval的弊端，还是采用setTimeout递归来模拟setInterval完成，这就造成了递归产生一个又一个的定时器，在切换页面时需要一次清除所有的未知定时器，很头疼。去网上搜索了一下，大致有以下两种解决方案：</p>
-<h3 id="定义全局变量，通过js遍历清除"><a href="#定义全局变量，通过js遍历清除" class="headerlink" title="定义全局变量，通过js遍历清除"></a>定义全局变量，通过js遍历清除</h3><p>这种方法的思想是，在创建定时器时，赋值记录到一个定义好的全局变量对象中，清除时循环全局对象的值，逐一清除，实现代码如下：</p>
+<a id="more"></a>
+<h2 id="定义全局变量，通过js遍历清除"><a href="#定义全局变量，通过js遍历清除" class="headerlink" title="定义全局变量，通过js遍历清除"></a>定义全局变量，通过js遍历清除</h2><p>这种方法的思想是，在创建定时器时，赋值记录到一个定义好的全局变量对象中，清除时循环全局对象的值，逐一清除，实现代码如下：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> pageTimer = &#123;&#125; ; <span class="comment">// 定义全局变量对象</span></div><div class="line"></div><div class="line"><span class="comment">// 赋值模拟</span></div><div class="line"><span class="comment">// 先npm install uuid</span></div><div class="line"><span class="keyword">import</span> uuidV4 <span class="keyword">from</span> <span class="string">'uuid/v4'</span>; <span class="comment">// Generate a v4 UUID (random)</span></div><div class="line"></div><div class="line">loop(params) &#123;</div><div class="line">    <span class="comment">// do something...</span></div><div class="line">    <span class="keyword">const</span> timer = uuidV4(); <span class="comment">// 生成唯一id作为timerKey</span></div><div class="line">    pageTimer[timer] = setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123; loop(params); &#125;, <span class="number">10000</span>);</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 清除全部定时器函数</span></div><div class="line">clearTimer() &#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> timer <span class="keyword">in</span> pageTimer) &#123;</div><div class="line">        clearTimeout(pageTimer[timer]);</div><div class="line">        <span class="keyword">delete</span> pageTimer[timer];</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 离开页面时调用清除函数</span></div><div class="line">clearTimer();</div></pre></td></tr></table></figure>
-<h3 id="暴力清除方式"><a href="#暴力清除方式" class="headerlink" title="暴力清除方式"></a>暴力清除方式</h3><p>设置一个比较大的数值，循环清除，模拟代码如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">1</span>; i &lt; <span class="number">1000</span>; i++) &#123;</div><div class="line">    clearTimeout(i);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="暴力清除方式"><a href="#暴力清除方式" class="headerlink" title="暴力清除方式"></a>暴力清除方式</h2><p>设置一个比较大的数值，循环清除，模拟代码如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">1</span>; i &lt; <span class="number">1000</span>; i++) &#123;</div><div class="line">    clearTimeout(i);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>总结：实际上暴力清除的方式不可取。首先是你并不能确定自己设置的值就一定比定时器的id大，如果不是，那就无法清除。其次，据说在IE下，定时器返回值是8位数字如：248147094，并且起始值不能确定，而Chrome和firefox下是从1开始的个位数字。所以还是建议采取第一种方法，可控性和可扩展性好，可以自己定制具体的清除逻辑。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://blog.csdn.net/canpark/article/details/8969183" target="_blank" rel="external">js清除未知定时器的方法</a></li>
+</ul>
 
       
     </div>
@@ -395,7 +410,7 @@
       
         
   <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-    <div>坚持原创分享，您的支持将鼓励我继续创作！</div>
+    <div>如果您觉得本博客对您有帮助，请持续关注，您的支持将鼓励我继续创作！</div>
     <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
       <span>赏</span>
     </button>
@@ -454,6 +469,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/28/vue-life-cycle/" rel="prev" title="Vue学习笔记 —— Vue生命周期">
+                Vue学习笔记 —— Vue生命周期 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -525,7 +544,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -536,7 +555,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -547,7 +566,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -620,7 +639,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义全局变量，通过js遍历清除"><span class="nav-number">1.</span> <span class="nav-text">定义全局变量，通过js遍历清除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#暴力清除方式"><span class="nav-number">2.</span> <span class="nav-text">暴力清除方式</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义全局变量，通过js遍历清除"><span class="nav-number">1.</span> <span class="nav-text">定义全局变量，通过js遍历清除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#暴力清除方式"><span class="nav-number">2.</span> <span class="nav-text">暴力清除方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
@@ -807,6 +826,113 @@
 
 
   
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("IfVg3cY1J7ur3tqnjfyQ7z78-gzGzoHsz", "WNTT7lkO4iq1x2FSs8xoYQxo");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
 
   
 

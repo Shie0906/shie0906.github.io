@@ -1,0 +1,1090 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Vue," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="最近在做项目的过程中遇到一些问题，最后都是运用vue生命周期钩子或者vue-router的路由钩子解决的，然后就想可以深入研究一下。在网上搜了一下，发现vue生命周期探究（一）和vue生命周期探究（二）这两篇文章写得很详细。本文便是在这两篇文章的基础上，结合自己的项目，重新整理而成。 先上官方文档：  vue实例生命周期 vue-router路由钩子 vue指令及其绑定周期">
+<meta name="keywords" content="Vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue学习笔记 —— Vue生命周期">
+<meta property="og:url" content="http://yoursite.com/2017/07/28/vue-life-cycle/index.html">
+<meta property="og:site_name" content="Shie">
+<meta property="og:description" content="最近在做项目的过程中遇到一些问题，最后都是运用vue生命周期钩子或者vue-router的路由钩子解决的，然后就想可以深入研究一下。在网上搜了一下，发现vue生命周期探究（一）和vue生命周期探究（二）这两篇文章写得很详细。本文便是在这两篇文章的基础上，结合自己的项目，重新整理而成。 先上官方文档：  vue实例生命周期 vue-router路由钩子 vue指令及其绑定周期">
+<meta property="og:image" content="https://cn.vuejs.org/images/lifecycle.png">
+<meta property="og:image" content="http://yoursite.com/images/vue-load-page-life-cycle.png">
+<meta property="og:image" content="http://yoursite.com/images/async-vue-load-page-life-cycle.png">
+<meta property="og:updated_time" content="2017-08-19T07:52:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue学习笔记 —— Vue生命周期">
+<meta name="twitter:description" content="最近在做项目的过程中遇到一些问题，最后都是运用vue生命周期钩子或者vue-router的路由钩子解决的，然后就想可以深入研究一下。在网上搜了一下，发现vue生命周期探究（一）和vue生命周期探究（二）这两篇文章写得很详细。本文便是在这两篇文章的基础上，结合自己的项目，重新整理而成。 先上官方文档：  vue实例生命周期 vue-router路由钩子 vue指令及其绑定周期">
+<meta name="twitter:image" content="https://cn.vuejs.org/images/lifecycle.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/28/vue-life-cycle/"/>
+
+
+
+
+
+  <title>Vue学习笔记 —— Vue生命周期 | Shie</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shie</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">常想一二、、、</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/28/vue-life-cycle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shie">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shie">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vue学习笔记 —— Vue生命周期</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-28T18:00:25+08:00">
+                2017-07-28
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-08-19T15:52:50+08:00">
+                2017-08-19
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/28/vue-life-cycle/" class="leancloud_visitors" data-flag-title="Vue学习笔记 —— Vue生命周期">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近在做项目的过程中遇到一些问题，最后都是运用vue生命周期钩子或者vue-router的路由钩子解决的，然后就想可以深入研究一下。在网上搜了一下，发现<a href="https://segmentfault.com/a/1190000008879966" target="_blank" rel="external">vue生命周期探究（一）</a>和<a href="https://segmentfault.com/a/1190000008923105" target="_blank" rel="external">vue生命周期探究（二）</a>这两篇文章写得很详细。本文便是在这两篇文章的基础上，结合自己的项目，重新整理而成。</p>
+<p>先上官方文档：</p>
+<ul>
+<li><a href="https://cn.vuejs.org/v2/guide/instance.html#实例生命周期" target="_blank" rel="external">vue实例生命周期</a></li>
+<li><a href="https://router.vuejs.org/zh-cn/advanced/navigation-guards.html" target="_blank" rel="external">vue-router路由钩子</a></li>
+<li><a href="https://cn.vuejs.org/v2/guide/custom-directive.html" target="_blank" rel="external">vue指令及其绑定周期</a></li>
+</ul>
+<a id="more"></a>
+<hr>
+<h2 id="生命周期钩子汇总"><a href="#生命周期钩子汇总" class="headerlink" title="生命周期钩子汇总"></a>生命周期钩子汇总</h2><ol>
+<li>根组件实例：8个 (beforeCreate、created、beforeMount、mounted、beforeUpdate、updated、beforeDestroy、destroyed)</li>
+<li>组件实例：8个 (beforeCreate、created、beforeMount、mounted、beforeUpdate、updated、beforeDestroy、destroyed)</li>
+<li>全局路由钩子：2个 (beforeEach、afterEach)</li>
+<li>某个路由独享的钩子：1个 (beforeEnter)</li>
+<li>组件路由钩子：3个 (beforeRouteEnter、beforeRouteUpdate、beforeRouteLeave)</li>
+<li>指令的周期： 5个 (bind、inserted、update、componentUpdated、unbind)</li>
+<li>beforeRouteEnter的next所对应的周期</li>
+<li>nextTick所对应的周期</li>
+</ol>
+<p>总共<strong>29</strong>个周期</p>
+<hr>
+<h2 id="组件实例周期"><a href="#组件实例周期" class="headerlink" title="组件实例周期"></a><a href="https://cn.vuejs.org/v2/api/#选项-生命周期钩子" target="_blank" rel="external">组件实例周期</a></h2><p>每个 Vue 实例在被创建之前都要经过一系列的初始化过程。例如，实例需要配置数据观测(data observer)、编译模版、挂载实例到 DOM ，然后在数据变化时更新 DOM 。在这个过程中，实例也会调用一些<strong>生命周期钩子</strong>，钩子的 this 指向调用它的 Vue 实例。组件的自定义逻辑可以分布在这些钩子中。</p>
+<div class="note success"><p>所有的生命周期钩子自动绑定 <code>this</code> 上下文到实例中，因此你可以访问数据，对属性和方法进行运算。这意味着 <strong>你不能使用箭头函数来定义一个生命周期方法</strong> (例如 <code>created: () =&gt; this.fetchTodos()</code>)。这是因为箭头函数绑定了父上下文，因此 <code>this</code> 与你期待的 Vue 实例不同，<code>this.fetchTodos</code> 的行为未定义。</p>
+</div>
+<p><img src="https://cn.vuejs.org/images/lifecycle.png" alt="vue-life-cycle"></p>
+<h3 id="beforeCreate"><a href="#beforeCreate" class="headerlink" title="beforeCreate"></a>beforeCreate</h3><p>在实例初始化之后，数据观测(data observer) 和 event/watcher 事件配置之前被调用。</p>
+<div class="note success"><p>此时组件的<a href="https://cn.vuejs.org/v2/api/#选项-数据" target="_blank" rel="external">选项</a>还未挂载，因此无法访问methods, data, computed上的方法或数据</p>
+</div>
+<h3 id="created"><a href="#created" class="headerlink" title="created"></a>created</h3><p>实例已经创建完成之后被调用。在这一步，实例已完成以下的配置：数据观测(data observer)，属性和方法的运算， watch/event 事件回调。然而，挂载阶段还没开始，<code>$el</code> 属性目前不可见。</p>
+<p>这是一个常用的生命周期，因为你可以调用methods中的方法、改变data中的数据，并且修改可以通过vue的响应式绑定体现在页面上、获取computed中的计算属性等等。</p>
+<div class="note success"><p>通常我们可以在这里对实例进行预处理。<br>也有一些童鞋喜欢在这里发ajax请求，值得注意的是，这个周期中是没有什么方法来对实例化过程进行拦截的。<br>因此假如有某些数据必须获取才允许进入页面的话，并不适合在这个页面发请求。<br>建议在组件路由钩子beforeRouteEnter中来完成。<br>但是路由钩子也只能拦截路由对应的component，对于没有挂载到路由上的根组件和路由入口挂载的组件生命周期是无法阻止的。</p>
+</div>
+<h3 id="beforeMonut"><a href="#beforeMonut" class="headerlink" title="beforeMonut"></a>beforeMonut</h3><p>在挂载开始之前被调用：相关的 <code>render</code> 函数首次被调用。<br><strong>该钩子在服务器端渲染期间不被调用。</strong></p>
+<h3 id="mounted"><a href="#mounted" class="headerlink" title="mounted"></a>mounted</h3><p><code>el</code> 被新创建的 <code>vm.$el</code> 替换，并挂载到实例上去之后调用该钩子。如果 root 实例挂载了一个文档内元素，当 <code>mounted</code> 被调用时 <code>vm.$el</code> 也在文档内。<br><strong>该钩子在服务器端渲染期间不被调用。</strong></p>
+<div class="note success"><p>1.在这个周期内，对data的改变可以生效。但是要进下一轮的dom更新，dom上的数据才会更新。<br>2.这个周期可以获取 dom。<br>3.beforeRouteEnter的next的钩子比mounted触发还要靠后<br>4.指令的生效在mounted周期之前</p>
+</div>
+<h3 id="beforeUpdate"><a href="#beforeUpdate" class="headerlink" title="beforeUpdate"></a>beforeUpdate</h3><p>数据更新时调用，发生在虚拟 DOM 重新渲染和打补丁之前。<br><strong>该钩子在服务器端渲染期间不被调用。</strong></p>
+<div class="note success"><p>你可以在这个钩子中进一步地更改状态，这不会触发附加的重渲染过程。</p>
+</div>
+<h3 id="updated"><a href="#updated" class="headerlink" title="updated"></a>updated</h3><p>由于数据更改导致的虚拟 DOM 重新渲染和打补丁，在这之后会调用该钩子。<br><strong>该钩子在服务器端渲染期间不被调用。</strong></p>
+<div class="note success"><p>当这个钩子被调用时，组件 DOM 已经更新，所以你现在可以执行依赖于 DOM 的操作。<br>然而在大多数情况下，你应该避免在此期间更改状态，因为这可能会导致更新无限循环。<br>如果要相应状态改变，通常最好使用<strong><a href="https://cn.vuejs.org/v2/api/#computed" target="_blank" rel="external">计算属性</a></strong>或 <strong><a href="https://cn.vuejs.org/v2/api/#watch" target="_blank" rel="external">watcher</a></strong> 取而代之。</p>
+</div>
+<h3 id="beforeDestroy"><a href="#beforeDestroy" class="headerlink" title="beforeDestroy"></a>beforeDestroy</h3><p>实例销毁之前调用。在这一步，实例仍然完全可用。<br><strong>该钩子在服务器端渲染期间不被调用。</strong></p>
+<div class="note success"><p>1.这一步还可以用this来获取实例。<br>2.一般在这一步做一些重置的操作。比如清除掉组件中的 定时器 和 监听的dom事件</p>
+</div>
+<h3 id="destroyed"><a href="#destroyed" class="headerlink" title="destroyed"></a>destroyed</h3><p>Vue 实例销毁后调用。调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。<br><strong>该钩子在服务器端渲染期间不被调用。</strong></p>
+<hr>
+<h2 id="全局路由钩子"><a href="#全局路由钩子" class="headerlink" title="全局路由钩子"></a>全局路由钩子</h2><p>作用于所有路由切换，一般在定义路由的文件里面定义。<br>定义路由实例和配置路由，需要在创建和挂载到根实例启动路由之前。</p>
+<h3 id="router-beforeEach"><a href="#router-beforeEach" class="headerlink" title="router.beforeEach"></a>router.beforeEach</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">示例</div><div class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> VueRouter(&#123; ... &#125;)</div><div class="line"></div><div class="line">router.beforeEach(<span class="function">(<span class="params">to, <span class="keyword">from</span>, next</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'路由全局钩子：beforeEach -- 有next方法'</span>)</div><div class="line">  next()</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>当一个导航触发时，全局的 before 钩子按照创建顺序调用。钩子是异步解析执行，此时导航在所有钩子 resolve 完之前一直处于<strong>等待中</strong>。<br>一般在这个钩子的回调中，对路由进行拦截。<br>比如，未登录的用户，直接进入了需要登录才可见的页面，那么可以用next(false)来拦截，使其跳回原页面。<br>值得注意的是，如果没有调用next方法，那么页面将卡在那。<br><div class="note success"><p>next的四种用法<br>1.next() 跳入下一个页面<br>2.next(‘/path’) 改变路由的跳转方向，使其跳到另一个路由<br>3.next(false)  返回原来的页面<br>4.next((vm)=&gt;{})  仅在beforeRouteEnter中可用，vm是组件实例。</p>
+</div></p>
+<h3 id="router-afterEach"><a href="#router-afterEach" class="headerlink" title="router.afterEach"></a>router.afterEach</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">示例</div><div class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> VueRouter(&#123; ... &#125;)</div><div class="line"></div><div class="line">router.afterEach(<span class="function">(<span class="params">to, <span class="keyword">from</span></span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'路由全局钩子：afterEach --- 没有next方法'</span>)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>在所有路由跳转结束的时候调用，和beforeEach是类似的，但是它没有next方法</p>
+<hr>
+<h2 id="某个路由独享的钩子"><a href="#某个路由独享的钩子" class="headerlink" title="某个路由独享的钩子"></a>某个路由独享的钩子</h2><h3 id="beforeEnter"><a href="#beforeEnter" class="headerlink" title="beforeEnter"></a>beforeEnter</h3><p>你可以在路由配置上直接定义 beforeEnter 钩子：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">示例</div><div class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> VueRouter(&#123;</div><div class="line">  <span class="attr">routes</span>: [</div><div class="line">    &#123;</div><div class="line">      <span class="attr">path</span>: <span class="string">'/foo'</span>,</div><div class="line">      <span class="attr">component</span>: Foo,</div><div class="line">      <span class="attr">beforeEnter</span>: <span class="function">(<span class="params">to, <span class="keyword">from</span>, next</span>) =&gt;</span> &#123;</div><div class="line">        <span class="comment">// ...</span></div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  ]</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>这些钩子与全局 before 钩子的方法参数是一样的。</p>
+<hr>
+<h2 id="组件路由钩子"><a href="#组件路由钩子" class="headerlink" title="组件路由钩子"></a>组件路由钩子</h2><p>和全局钩子、路由独享钩子不同的是，它仅仅作用于某个组件，一般在.vue文件中去定义。</p>
+<h3 id="beforeRouteEnter"><a href="#beforeRouteEnter" class="headerlink" title="beforeRouteEnter"></a>beforeRouteEnter</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">示例</div><div class="line">  beforeRouteEnter (to, <span class="keyword">from</span>, next) &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>)  <span class="comment">//undefined，不能用this来获取vue实例</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'组件路由钩子：beforeRouteEnter'</span>)</div><div class="line">    next(<span class="function"><span class="params">vm</span> =&gt;</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(vm)  <span class="comment">//vm为vue的实例</span></div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'组件路由钩子beforeRouteEnter的next'</span>)</div><div class="line">    &#125;)</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>这个是一个很不同的钩子。因为beforeRouterEnter在组件创建之前调用，所以它无法直接用this来访问组件实例。<br>为了弥补这一点，vue-router开发人员，给他的next方法加了特技，可以传一个回调，回调的第一个参数即是组件实例。<br>一般我们可以利用这点，对实例上的数据进行修改，调用实例上的方法。</p>
+<p>我们可以在这个方法去请求数据，在数据获取到之后，再调用next就能保证你进页面的时候，数据已经获取到了。没错，这里next有阻塞的效果。你没调用的话，就会一直卡在那<br><div class="note success"><p><code>next(vm =&gt; { console.log(&#39;next&#39;) })</code><br>这个里面的代码是很晚执行的，在组件mounted周期之后。没错，这是一个坑。你要注意。<br>beforeRouteEnter的代码时很早执行的，在组件beforeCreate之前；<br>但是next里面回调的执行，很晚，在mounted之后。</p>
+</div></p>
+<h3 id="beforeRouteLeave"><a href="#beforeRouteLeave" class="headerlink" title="beforeRouteLeave"></a>beforeRouteLeave</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">beforeRouteLeave (to, <span class="keyword">from</span>, next) &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>)    <span class="comment">//可以访问vue实例</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'组件路由钩子：beforeRouteLeave'</span>)</div><div class="line">    next()</div><div class="line">&#125;,</div></pre></td></tr></table></figure>
+<p>在离开路由时调用。可以用this来访问组件实例。但是next中不能传回调。</p>
+<h3 id="beforeRouteUpdate-2-2-新增"><a href="#beforeRouteUpdate-2-2-新增" class="headerlink" title="beforeRouteUpdate (2.2 新增)"></a>beforeRouteUpdate (2.2 新增)</h3><p>这个方法是vue-router2.2版本加上的。因为原来的版本中，如果一个页面在两个子路由之间跳转，是不触发beforeRouteLeave的。这会导致某些重置操作，没地方触发。在之前，我们都是用watch $route来hack的。但是通过这个钩子，我们有了更好的方式。</p>
+<div class="note success"><p>对于路由相互跳转，组件复用，容易引发组件不重新执行什么周期的问题，<a href="https://router.vuejs.org/zh-cn/essentials/dynamic-matching.html" target="_blank" rel="external">官方的方法是加一个watch来重新获取数据</a>，但对于嵌套多层子组件的情况并不好。对于每次切换路由需要重新执行组件的生命周期的情况，可以加一个唯一的<code>key</code>一劳永逸的解决。</p>
+</div>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">示例</div><div class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">router-view</span> <span class="attr">:key</span>=<span class="string">"key"</span>&gt;</span><span class="tag">&lt;/<span class="name">router-view</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></div><div class="line">computed: &#123;</div><div class="line">  key() &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.$route.name !== <span class="literal">undefined</span>? <span class="keyword">this</span>.$route.name + +<span class="keyword">new</span> <span class="built_in">Date</span>(): <span class="keyword">this</span>.$route + +<span class="keyword">new</span> <span class="built_in">Date</span>()</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
+<hr>
+<h2 id="指令周期"><a href="#指令周期" class="headerlink" title="指令周期"></a>指令周期</h2><p>绑定自定义指令的时候也会有对应的周期。<br>这几个周期，一般比较常用的是bind。</p>
+<h3 id="bind"><a href="#bind" class="headerlink" title="bind"></a>bind</h3><p>只调用一次，指令第一次绑定到元素时调用，用这个钩子函数可以定义一个在绑定时执行一次的初始化动作。</p>
+<h3 id="inserted"><a href="#inserted" class="headerlink" title="inserted"></a>inserted</h3><p>被绑定元素插入父节点时调用（父节点存在即可调用，不必存在于 document 中）。</p>
+<div class="note success"><p>实际上是插入VNode的时候调用。</p>
+</div>
+<h3 id="update"><a href="#update" class="headerlink" title="update"></a>update</h3><p>所在组件的 VNode 更新时调用，<strong>但是可能发生在其孩子的 VNode 更新之前</strong>。指令的值可能发生了改变也可能没有。但是你可以通过比较更新前后的值来忽略不必要的模板更新。</p>
+<div class="note success"><p>被绑定元素所在的模板更新时调用，而不论绑定值是否变化。通过比较更新前后的绑定值，可以忽略不必要的模板更新。<br>慎用，如果在指令里绑定事件，并且用这个周期的，记得把事件注销</p>
+</div>
+<h3 id="componentUpdated"><a href="#componentUpdated" class="headerlink" title="componentUpdated"></a>componentUpdated</h3><p>所在组件的 VNode <strong>及其孩子的 VNode</strong> 全部更新时调用。<br><div class="note success"><p>被绑定元素所在模板完成一次更新周期时调用。</p>
+</div></p>
+<h3 id="unbind"><a href="#unbind" class="headerlink" title="unbind"></a>unbind</h3><p>只调用一次， 指令与元素解绑时调用。</p>
+<hr>
+<h2 id="Vue-nextTick、vm-nextTick"><a href="#Vue-nextTick、vm-nextTick" class="headerlink" title="Vue.nextTick、vm.$nextTick"></a>Vue.nextTick、vm.$nextTick</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">示例：</div><div class="line">  created () &#123;</div><div class="line">    <span class="keyword">this</span>.$nextTick(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'nextTick'</span>)  <span class="comment">//回调里的函数一直到真实的dom渲染结束后，才执行</span></div><div class="line">    &#125;)</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'组件：created'</span>)</div><div class="line">  &#125;,</div></pre></td></tr></table></figure>
+<p>nextTick方法的回调会在dom更新后再执行，因此可以和一些dom操作搭配一起用，如 ref。<br>非常好用，可以解决很多疑难杂症。</p>
+<div class="note success"><p>场景：<br>你用ref获得一个输入框，用v-model绑定。<br>在某个方法里改变绑定的值，在这个方法里用ref去获取dom并取值，你会发现dom的值并没有改变。<br>因为此时vue的方法，还没去触发dom的改变。<br>因此你可以把获取dom值的操作放在vm.$nextTick的回调里，就可以了。</p>
+</div>
+<hr>
+<h2 id="页面加载，vue生命周期触发顺序"><a href="#页面加载，vue生命周期触发顺序" class="headerlink" title="页面加载，vue生命周期触发顺序"></a>页面加载，vue生命周期触发顺序</h2><h3 id="页面加载会触发的生命周期汇总"><a href="#页面加载会触发的生命周期汇总" class="headerlink" title="页面加载会触发的生命周期汇总"></a>页面加载会触发的生命周期汇总</h3><ul>
+<li>根实例的加载相关的生命周期（beforeCreate、created、beforeMount、mounted）</li>
+<li>组件实例的加载相关的生命周期(beforeCreate、created、beforeMount、mounted)</li>
+<li>全局路由钩子(router.beforeEach)</li>
+<li>某个路由独享的钩子(beforeEnter)</li>
+<li>组件路由钩子(beforeRouteEnter)</li>
+<li>组件路由钩子的next里的回调(beforeRouteEnter)</li>
+<li>指令的周期(bind,inserted)</li>
+<li>nextTick方法的回调</li>
+</ul>
+<h3 id="非异步生命周期"><a href="#非异步生命周期" class="headerlink" title="非异步生命周期"></a>非异步生命周期</h3><p>没有异步请求，正常进入路由加载组件，vue生命周期触发顺序</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">示例</div><div class="line"><span class="comment">// main.js</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span>;</div><div class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">'./App'</span>;</div><div class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">'./router'</span>;</div><div class="line"></div><div class="line">Vue.config.productionTip = <span class="literal">false</span>;</div><div class="line"></div><div class="line"><span class="keyword">new</span> Vue(&#123;</div><div class="line">  beforeCreate() &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'根组件：beforeCreate'</span>);</div><div class="line">  &#125;,</div><div class="line">  created() &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'根组件：created'</span>);</div><div class="line">  &#125;,</div><div class="line">  beforeMount() &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'根组件：beforeMount'</span>);</div><div class="line">  &#125;,</div><div class="line">  mounted() &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'根组件：mounted'</span>);</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">el</span>: <span class="string">'#app'</span>,</div><div class="line">  router,</div><div class="line">  <span class="attr">template</span>: <span class="string">'&lt;App/&gt;'</span>,</div><div class="line">  <span class="attr">components</span>: &#123; App &#125;,</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">示例</div><div class="line"><span class="comment">// router/index.js</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span>;</div><div class="line"><span class="keyword">import</span> Router <span class="keyword">from</span> <span class="string">'vue-router'</span>;</div><div class="line"><span class="keyword">import</span> Hello <span class="keyword">from</span> <span class="string">'@/components/Hello'</span>;</div><div class="line"><span class="keyword">import</span> Test <span class="keyword">from</span> <span class="string">'@/components/Test'</span>;</div><div class="line"></div><div class="line">Vue.use(Router);</div><div class="line"></div><div class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> Router(&#123;</div><div class="line">  <span class="attr">routes</span>: [</div><div class="line">    &#123;</div><div class="line">      <span class="attr">path</span>: <span class="string">'/'</span>,</div><div class="line">      <span class="attr">name</span>: <span class="string">'Hello'</span>,</div><div class="line">      <span class="attr">component</span>: Hello,</div><div class="line">    &#125;,&#123;</div><div class="line">      <span class="attr">path</span>: <span class="string">'/test'</span>,</div><div class="line">      <span class="attr">name</span>: <span class="string">'Test'</span>,</div><div class="line">      <span class="attr">component</span>: Test,</div><div class="line">      <span class="attr">beforeEnter</span>: <span class="function">(<span class="params">to, <span class="keyword">from</span>, next</span>) =&gt;</span> &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'路由独享的钩子：beforeEnter'</span>);</div><div class="line">        next();</div><div class="line">      &#125;,</div><div class="line">    &#125;,</div><div class="line">  ],</div><div class="line">&#125;);</div><div class="line"></div><div class="line">router.beforeEach(<span class="function">(<span class="params">to, <span class="keyword">from</span>, next</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'路由全局钩子1：beforeEach'</span>);</div><div class="line">  next();</div><div class="line">&#125;);</div><div class="line"></div><div class="line">router.beforeEach(<span class="function">(<span class="params">to, <span class="keyword">from</span>, next</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'路由全局钩子2：beforeEach'</span>);</div><div class="line">  next();</div><div class="line">&#125;);</div><div class="line"></div><div class="line">router.afterEach(<span class="function">(<span class="params">to, <span class="keyword">from</span></span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'路由全局钩子3：afterEach'</span>);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> router;</div></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line">示例</div><div class="line">// App.vue</div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./assets/logo.png"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">router-view</span>&gt;</span><span class="tag">&lt;/<span class="name">router-view</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'app'</span>,</div><div class="line">  beforeRouteEnter (to, <span class="keyword">from</span>, next) &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'App组件路由钩子：beforeRouteEnter'</span>)</div><div class="line">    next(<span class="function"><span class="params">vm</span> =&gt;</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'App组件路由钩子beforeRouteEnter的next'</span>)</div><div class="line">    &#125;)</div><div class="line">  &#125;,</div><div class="line">  beforeCreate () &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'App组件：beforeCreate'</span>)</div><div class="line">  &#125;,</div><div class="line">  created () &#123;</div><div class="line">    <span class="keyword">this</span>.$nextTick(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'App组件：nextTick'</span>)</div><div class="line">    &#125;)</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'App组件：created'</span>)</div><div class="line">  &#125;,</div><div class="line">  beforeMount () &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'App组件：beforeMount'</span>)</div><div class="line">  &#125;,</div><div class="line">  mounted () &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'App组件：mounted'</span>)</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">directives</span>: &#123;</div><div class="line">    <span class="attr">foo</span>: &#123;</div><div class="line">      bind (el, binding, vnode) &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'App组件：指令binding'</span>)</div><div class="line">      &#125;,</div><div class="line">      inserted (el, binding, vnode) &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'App组件：指令inserted'</span>)</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></div><div class="line">#app &#123;</div><div class="line">  font-family: 'Avenir', Helvetica, Arial, sans-serif;</div><div class="line">  -webkit-font-smoothing: antialiased;</div><div class="line">  -moz-osx-font-smoothing: grayscale;</div><div class="line">  text-align: center;</div><div class="line">  color: #2c3e50;</div><div class="line">  margin-top: 60px;</div><div class="line">&#125;</div><div class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">示例</div><div class="line">// Test.vue</div><div class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">h1</span> <span class="attr">v-foo</span> @<span class="attr">click</span> = <span class="string">"$router.push('/')"</span>&gt;</span>test go hello<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</div><div class="line">  beforeRouteEnter (to, <span class="keyword">from</span>, next) &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'路由子组件路由钩子：beforeRouteEnter'</span>)</div><div class="line">    next(<span class="function"><span class="params">vm</span> =&gt;</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'路由子组件路由钩子beforeRouteEnter的next'</span>)</div><div class="line">    &#125;)</div><div class="line">  &#125;,</div><div class="line">  beforeCreate () &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'路由子组件：beforeCreate'</span>)</div><div class="line">  &#125;,</div><div class="line">  created () &#123;</div><div class="line">    <span class="keyword">this</span>.$nextTick(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'路由子组件：nextTick'</span>)</div><div class="line">    &#125;)</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'路由子组件：created'</span>)</div><div class="line">  &#125;,</div><div class="line">  beforeMount () &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'路由子组件：beforeMount'</span>)</div><div class="line">  &#125;,</div><div class="line">  mounted () &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'路由子组件：mounted'</span>)</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">directives</span>: &#123;</div><div class="line">    <span class="attr">foo</span>: &#123;</div><div class="line">      bind (el, binding, vnode) &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'路由子组件：指令binding'</span>)</div><div class="line">      &#125;,</div><div class="line">      inserted (el, binding, vnode) &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'路由子组件：指令inserted'</span>)</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>进入test路由<br><img src="/images/vue-load-page-life-cycle.png" alt="无异步请求vue页面加载生命周期"></p>
+<h4 id="实际执行的顺序"><a href="#实际执行的顺序" class="headerlink" title="实际执行的顺序"></a>实际执行的顺序</h4><ol>
+<li>路由钩子 (beforeEach、beforeEnter、beforeRouteEnter、afterEach)</li>
+<li>根组件 (beforeCreate、created、beforeMount)</li>
+<li>APP组件 (beforeCreate、created、beforeMount)</li>
+<li>路由子组件 (beforeCreate、created、beforeMount)</li>
+<li>路由子组件指令 (bind、inserted)</li>
+<li>路由子组件 mounted</li>
+<li>App组件 mounted</li>
+<li>根组件 mounted</li>
+<li>路由子组件路由钩子beforeRouteEnter的next的回调</li>
+<li>App组件 nextTick</li>
+<li>路由子组件 nextTick</li>
+</ol>
+<h3 id="异步请求生命周期"><a href="#异步请求生命周期" class="headerlink" title="异步请求生命周期"></a>异步请求生命周期</h3><p>在钩子中发送异步请求，进入路由加载组件，vue生命周期触发顺序</p>
+<p>修改路由配置文件，在beforeEach中发送异步请求，阻塞路由<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">示例</div><div class="line"><span class="comment">// router/index.js</span></div><div class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span>;</div><div class="line"><span class="keyword">import</span> Router <span class="keyword">from</span> <span class="string">'vue-router'</span>;</div><div class="line"><span class="keyword">import</span> Hello <span class="keyword">from</span> <span class="string">'@/components/Hello'</span>;</div><div class="line"><span class="keyword">import</span> Test <span class="keyword">from</span> <span class="string">'@/components/Test'</span>;</div><div class="line"></div><div class="line">Vue.use(Router);</div><div class="line"></div><div class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> Router(&#123;</div><div class="line">  <span class="attr">routes</span>: [</div><div class="line">    &#123;</div><div class="line">      <span class="attr">path</span>: <span class="string">'/'</span>,</div><div class="line">      <span class="attr">name</span>: <span class="string">'Hello'</span>,</div><div class="line">      <span class="attr">component</span>: Hello,</div><div class="line">    &#125;,&#123;</div><div class="line">      <span class="attr">path</span>: <span class="string">'/test'</span>,</div><div class="line">      <span class="attr">name</span>: <span class="string">'Test'</span>,</div><div class="line">      <span class="attr">component</span>: Test,</div><div class="line">      <span class="attr">beforeEnter</span>: <span class="function">(<span class="params">to, <span class="keyword">from</span>, next</span>) =&gt;</span> &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'路由独享的钩子：beforeEnter'</span>);</div><div class="line">        next();</div><div class="line">      &#125;,</div><div class="line">    &#125;,</div><div class="line">  ],</div><div class="line">&#125;);</div><div class="line"></div><div class="line">router.beforeEach(<span class="function">(<span class="params">to, <span class="keyword">from</span>, next</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'路由全局钩子1：beforeEach'</span>);</div><div class="line">  $.get(<span class="string">'https://www.renrenche.com'</span>, () =&gt; &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'路由全局钩子4：异步回调beforeEach'</span>);</div><div class="line">    next();</div><div class="line">  &#125;);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">router.beforeEach(<span class="function">(<span class="params">to, <span class="keyword">from</span>, next</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'路由全局钩子2：beforeEach'</span>);</div><div class="line">  next();</div><div class="line">&#125;);</div><div class="line"></div><div class="line">router.afterEach(<span class="function">(<span class="params">to, <span class="keyword">from</span></span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'路由全局钩子3：afterEach'</span>);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> router;</div></pre></td></tr></table></figure></p>
+<p><img src="/images/async-vue-load-page-life-cycle.png" alt="异步请求vue页面加载生命周期"></p>
+<h4 id="实际执行的顺序-1"><a href="#实际执行的顺序-1" class="headerlink" title="实际执行的顺序"></a>实际执行的顺序</h4><ol>
+<li>路由全局钩子 (beforeEach)</li>
+<li>根组件 (beforeCreate、created、beforeMount)</li>
+<li>APP组件 (beforeCreate、created、beforeMount、mounted)</li>
+<li>根组件 mounted</li>
+<li>App组件 nextTick</li>
+<li>路由钩子(beforeEach异步回调结果、其他beforeEach、beforeEnter、beforeRouteEnter、afterEach)</li>
+<li>路由子组件 (beforeCreate、created、beforeMount)</li>
+<li>路由子组件指令 (bind、inserted)</li>
+<li>路由子组件 mounted</li>
+<li>路由子组件路由钩子beforeRouteEnter的next的回调</li>
+<li>路由子组件 nextTick</li>
+</ol>
+<hr>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><h3 id="路由钩子只能作用于路由组件"><a href="#路由钩子只能作用于路由组件" class="headerlink" title="路由钩子只能作用于路由组件"></a>路由钩子只能作用于路由组件</h3><div class="note success"><p>App组件是非路由子组件，无法使用路由钩子，路由钩子也无法阻止其正常的生命周期过程<br>若想在路由钩子里发送异步请求获取信息，阻止组件渲染，App组件是无法拦截的。<br>若在路由钩子里发送异步请求改变vuex里的数据，App组件最初绑定的也是vuex的初始化数据。</p>
+</div>
+<h3 id="路由钩子执行周期非常早，甚至在根实例的渲染之前"><a href="#路由钩子执行周期非常早，甚至在根实例的渲染之前" class="headerlink" title="路由钩子执行周期非常早，甚至在根实例的渲染之前"></a>路由钩子执行周期非常早，甚至在根实例的渲染之前</h3><p><strong>具体的顺序</strong> <code>router.beforeEach &gt; beforeEnter &gt; beforeRouteEnter &gt; router.afterEach</code></p>
+<div class="note success"><p>在进行路由拦截的时候要避免使用实例内部的方法或属性。<br>在开发项目时候，如果把具体拦截的程序，写在根实例的方法上，到beforeEach去调用。会导致整个拦截的周期，推迟到实例渲染之后。<br>因此对于一些路由组件的beforeRouteEnter里的请求并无法拦截，页面看上去好像已经拦截下来了。<br>实际上请求依然发了出去，beforeRouteEnter内的函数依然执行了。</p>
+</div>
+<h3 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h3><p>指令的绑定在组件mounted之前，组件的beforeMount之后</p>
+<h3 id="beforeRouteEnter的next钩子"><a href="#beforeRouteEnter的next钩子" class="headerlink" title="beforeRouteEnter的next钩子"></a>beforeRouteEnter的next钩子</h3><p>beforeRouteEnter的执行很靠前，而其中next的回调钩子的函数，执行则非常靠后，在mounted之后。<br>我们通常是在beforeRouteEnter中加载一些首屏用数据，待数据收到后，再调用next钩子，通过回调的参数vm将数据绑定到实例上。<br>因此，请注意next的钩子是非常靠后的。</p>
+<h3 id="nextTick"><a href="#nextTick" class="headerlink" title="nextTick"></a>nextTick</h3><p>越早注册的nextTick触发越早</p>
+<h3 id="vuex"><a href="#vuex" class="headerlink" title="vuex"></a>vuex</h3><p>vuex的store是响应式的，绑定到根组件时store里只是初始化的值，对于由异步请求去更改的store里的state和getters，最初是获取不到的。</p>
+<h3 id="vue数据绑定"><a href="#vue数据绑定" class="headerlink" title="vue数据绑定"></a>vue数据绑定</h3><p>如果绑定的是对象，需要先给每个属性赋初值，否则绑定不上。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://cn.vuejs.org/v2/guide/instance.html#实例生命周期" target="_blank" rel="external">vue实例生命周期</a></li>
+<li><a href="https://router.vuejs.org/zh-cn/advanced/navigation-guards.html" target="_blank" rel="external">vue-router路由钩子</a></li>
+<li><a href="https://cn.vuejs.org/v2/guide/custom-directive.html" target="_blank" rel="external">vue指令及其绑定周期</a></li>
+<li><a href="https://cn.vuejs.org/v2/api/#选项-生命周期钩子" target="_blank" rel="external">组件实例周期</a></li>
+<li><a href="https://segmentfault.com/a/1190000008879966" target="_blank" rel="external">vue生命周期探究（一）</a></li>
+<li><a href="https://segmentfault.com/a/1190000008923105" target="_blank" rel="external">vue生命周期探究（二）</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>如果您觉得本博客对您有帮助，请持续关注，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/qrcode-wechatpay.jpg" alt="Shie WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/qrcode-alipay.jpg" alt="Shie Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Vue/" rel="tag"># Vue</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/20/js-clear-timer/" rel="next" title="js清除定时器">
+                <i class="fa fa-chevron-left"></i> js清除定时器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/01/poetry-libai/" rel="prev" title="诗词曲赋 —— 李白">
+                诗词曲赋 —— 李白 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="Shie" />
+          <p class="site-author-name" itemprop="name">Shie</p>
+           
+              <p class="site-description motion-element" itemprop="description">Tomorrow is another day!</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Shie0906" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/shie0906" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/aa55e0b28317" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/Shie0906" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#生命周期钩子汇总"><span class="nav-number">1.</span> <span class="nav-text">生命周期钩子汇总</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组件实例周期"><span class="nav-number">2.</span> <span class="nav-text">组件实例周期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#beforeCreate"><span class="nav-number">2.1.</span> <span class="nav-text">beforeCreate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#created"><span class="nav-number">2.2.</span> <span class="nav-text">created</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#beforeMonut"><span class="nav-number">2.3.</span> <span class="nav-text">beforeMonut</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mounted"><span class="nav-number">2.4.</span> <span class="nav-text">mounted</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#beforeUpdate"><span class="nav-number">2.5.</span> <span class="nav-text">beforeUpdate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#updated"><span class="nav-number">2.6.</span> <span class="nav-text">updated</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#beforeDestroy"><span class="nav-number">2.7.</span> <span class="nav-text">beforeDestroy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#destroyed"><span class="nav-number">2.8.</span> <span class="nav-text">destroyed</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全局路由钩子"><span class="nav-number">3.</span> <span class="nav-text">全局路由钩子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#router-beforeEach"><span class="nav-number">3.1.</span> <span class="nav-text">router.beforeEach</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#router-afterEach"><span class="nav-number">3.2.</span> <span class="nav-text">router.afterEach</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#某个路由独享的钩子"><span class="nav-number">4.</span> <span class="nav-text">某个路由独享的钩子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#beforeEnter"><span class="nav-number">4.1.</span> <span class="nav-text">beforeEnter</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组件路由钩子"><span class="nav-number">5.</span> <span class="nav-text">组件路由钩子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#beforeRouteEnter"><span class="nav-number">5.1.</span> <span class="nav-text">beforeRouteEnter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#beforeRouteLeave"><span class="nav-number">5.2.</span> <span class="nav-text">beforeRouteLeave</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#beforeRouteUpdate-2-2-新增"><span class="nav-number">5.3.</span> <span class="nav-text">beforeRouteUpdate (2.2 新增)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指令周期"><span class="nav-number">6.</span> <span class="nav-text">指令周期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bind"><span class="nav-number">6.1.</span> <span class="nav-text">bind</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#inserted"><span class="nav-number">6.2.</span> <span class="nav-text">inserted</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#update"><span class="nav-number">6.3.</span> <span class="nav-text">update</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentUpdated"><span class="nav-number">6.4.</span> <span class="nav-text">componentUpdated</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unbind"><span class="nav-number">6.5.</span> <span class="nav-text">unbind</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vue-nextTick、vm-nextTick"><span class="nav-number">7.</span> <span class="nav-text">Vue.nextTick、vm.$nextTick</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#页面加载，vue生命周期触发顺序"><span class="nav-number">8.</span> <span class="nav-text">页面加载，vue生命周期触发顺序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#页面加载会触发的生命周期汇总"><span class="nav-number">8.1.</span> <span class="nav-text">页面加载会触发的生命周期汇总</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非异步生命周期"><span class="nav-number">8.2.</span> <span class="nav-text">非异步生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实际执行的顺序"><span class="nav-number">8.2.1.</span> <span class="nav-text">实际执行的顺序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步请求生命周期"><span class="nav-number">8.3.</span> <span class="nav-text">异步请求生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实际执行的顺序-1"><span class="nav-number">8.3.1.</span> <span class="nav-text">实际执行的顺序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">9.</span> <span class="nav-text">结论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#路由钩子只能作用于路由组件"><span class="nav-number">9.1.</span> <span class="nav-text">路由钩子只能作用于路由组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路由钩子执行周期非常早，甚至在根实例的渲染之前"><span class="nav-number">9.2.</span> <span class="nav-text">路由钩子执行周期非常早，甚至在根实例的渲染之前</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指令"><span class="nav-number">9.3.</span> <span class="nav-text">指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#beforeRouteEnter的next钩子"><span class="nav-number">9.4.</span> <span class="nav-text">beforeRouteEnter的next钩子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nextTick"><span class="nav-number">9.5.</span> <span class="nav-text">nextTick</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vuex"><span class="nav-number">9.6.</span> <span class="nav-text">vuex</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vue数据绑定"><span class="nav-number">9.7.</span> <span class="nav-text">vue数据绑定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">10.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shie</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/three.min.js"></script>
+
+  
+  <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("IfVg3cY1J7ur3tqnjfyQ7z78-gzGzoHsz", "WNTT7lkO4iq1x2FSs8xoYQxo");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
