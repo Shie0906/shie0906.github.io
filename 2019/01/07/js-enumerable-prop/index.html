@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="JavaScript,设计模式," />
+  <meta name="keywords" content="JavaScript,可枚举属性," />
 
 
 
@@ -93,18 +93,21 @@
 
 
 
-<meta name="description" content="面向对象JavaScript 是动态类型语言静态类型： 在编译时便已确定变量的类型。 特点：可靠，但繁琐动态类型： 变量类型要到程序运行的时候，待变量被赋予某个值之后，才会具有某种类型。 特点：简洁灵活，但易出错 example：鸭子类型  关注 HAS-A 而非 IS-A 面向对象的三大特性：  多态：将“做什么”与“怎么做”分离，静态类型语言通过抽象类和接口来实现，JS 没有约束，比较灵活 封">
-<meta name="keywords" content="JavaScript,设计模式">
+<meta name="description" content="枚举就是列举，可枚举属性就是指对象中的属性可以被列举出来，即可被遍历。在 js 中，对象的属性分为可枚举属性和不可枚举属性，它们是由属性的 enumerable 值决定的。js 中会遍历对象属性的函数有：for…in、Object.keys()、JSON.stringify()、Object.getOwnPropertyNames() 等">
+<meta name="keywords" content="JavaScript,可枚举属性">
 <meta property="og:type" content="article">
-<meta property="og:title" content="javascript设计模式与开发实践-第一部分">
-<meta property="og:url" content="http://yoursite.com/2017/07/18/javascript-design-pattern-part-1/index.html">
+<meta property="og:title" content="js中的可枚举属性与不可枚举属性">
+<meta property="og:url" content="http://yoursite.com/2019/01/07/js-enumerable-prop/index.html">
 <meta property="og:site_name" content="Shie">
-<meta property="og:description" content="面向对象JavaScript 是动态类型语言静态类型： 在编译时便已确定变量的类型。 特点：可靠，但繁琐动态类型： 变量类型要到程序运行的时候，待变量被赋予某个值之后，才会具有某种类型。 特点：简洁灵活，但易出错 example：鸭子类型  关注 HAS-A 而非 IS-A 面向对象的三大特性：  多态：将“做什么”与“怎么做”分离，静态类型语言通过抽象类和接口来实现，JS 没有约束，比较灵活 封">
+<meta property="og:description" content="枚举就是列举，可枚举属性就是指对象中的属性可以被列举出来，即可被遍历。在 js 中，对象的属性分为可枚举属性和不可枚举属性，它们是由属性的 enumerable 值决定的。js 中会遍历对象属性的函数有：for…in、Object.keys()、JSON.stringify()、Object.getOwnPropertyNames() 等">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-07-20T08:55:21.000Z">
+<meta property="og:image" content="http://yoursite.com/images/js-enumerable-prop1.png">
+<meta property="og:image" content="http://yoursite.com/images/js-enumerable-prop2.png">
+<meta property="og:updated_time" content="2019-01-07T13:43:41.430Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="javascript设计模式与开发实践-第一部分">
-<meta name="twitter:description" content="面向对象JavaScript 是动态类型语言静态类型： 在编译时便已确定变量的类型。 特点：可靠，但繁琐动态类型： 变量类型要到程序运行的时候，待变量被赋予某个值之后，才会具有某种类型。 特点：简洁灵活，但易出错 example：鸭子类型  关注 HAS-A 而非 IS-A 面向对象的三大特性：  多态：将“做什么”与“怎么做”分离，静态类型语言通过抽象类和接口来实现，JS 没有约束，比较灵活 封">
+<meta name="twitter:title" content="js中的可枚举属性与不可枚举属性">
+<meta name="twitter:description" content="枚举就是列举，可枚举属性就是指对象中的属性可以被列举出来，即可被遍历。在 js 中，对象的属性分为可枚举属性和不可枚举属性，它们是由属性的 enumerable 值决定的。js 中会遍历对象属性的函数有：for…in、Object.keys()、JSON.stringify()、Object.getOwnPropertyNames() 等">
+<meta name="twitter:image" content="http://yoursite.com/images/js-enumerable-prop1.png">
 
 
 
@@ -132,13 +135,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/18/javascript-design-pattern-part-1/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/01/07/js-enumerable-prop/"/>
 
 
 
 
 
-  <title>javascript设计模式与开发实践-第一部分 | Shie</title>
+  <title>js中的可枚举属性与不可枚举属性 | Shie</title>
   
 
 
@@ -277,7 +280,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/18/javascript-design-pattern-part-1/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/07/js-enumerable-prop/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Shie">
@@ -294,7 +297,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">javascript设计模式与开发实践-第一部分</h1>
+          <h1 class="post-title" itemprop="name headline">js中的可枚举属性与不可枚举属性</h1>
         
 
         <div class="post-meta">
@@ -306,8 +309,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-18T17:11:22+08:00">
-                2017-07-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-07T17:47:05+08:00">
+                2019-01-07
               </time>
             
 
@@ -322,8 +325,8 @@
               
                 <span class="post-meta-item-text">更新于</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2017-07-20T16:55:21+08:00">
-                2017-07-20
+              <time title="更新于" itemprop="dateModified" datetime="2019-01-07T21:43:41+08:00">
+                2019-01-07
               </time>
             
           </span>
@@ -358,7 +361,7 @@
 
           
           
-             <span id="/2017/07/18/javascript-design-pattern-part-1/" class="leancloud_visitors" data-flag-title="javascript设计模式与开发实践-第一部分">
+             <span id="/2019/01/07/js-enumerable-prop/" class="leancloud_visitors" data-flag-title="js中的可枚举属性与不可枚举属性">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -386,59 +389,28 @@
       
 
       
-        <h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><p>JavaScript 是<strong>动态类型语言</strong><br><strong>静态类型：</strong> 在编译时便已确定变量的类型。 特点：可靠，但繁琐<br><strong>动态类型：</strong> 变量类型要到程序运行的时候，待变量被赋予某个值之后，才会具有某种类型。 特点：简洁灵活，但易出错</p>
-<p>example：<strong>鸭子类型</strong>  关注 HAS-A 而非 IS-A</p>
-<p>面向对象的三大特性：</p>
-<ul>
-<li>多态：将“做什么”与“怎么做”分离，静态类型语言通过抽象类和接口来实现，JS 没有约束，比较灵活</li>
-<li>封装：无原生支持，可以通过闭包实现私有变量</li>
-<li>继承：采用原型继承</li>
-</ul>
+        <p>枚举就是列举，可枚举属性就是指对象中的属性可以被列举出来，即可被遍历。在 js 中，对象的属性分为可枚举属性和不可枚举属性，它们是由属性的 <code>enumerable</code> 值决定的。js 中会遍历对象属性的函数有：<code>for…in</code>、<code>Object.keys()</code>、<code>JSON.stringify()</code>、<code>Object.getOwnPropertyNames()</code> 等</p>
 <a id="more"></a>
-<h2 id="this、call-和-apply"><a href="#this、call-和-apply" class="headerlink" title="this、call 和 apply"></a>this、call 和 apply</h2><p>JavaScript 的 this 总是指向一个对象，而具体指向哪个对象是在运行时基于函数的执行环境动态绑定的，而非函数被声明时的环境。</p>
-<p>常用的this指向：</p>
-<ul>
-<li>作为对象的方法调用——指向该对象</li>
-<li>作为普通函数调用——window</li>
-<li>构造器调用——该对象</li>
-<li>Function.prototype.call 或 Function.prototype.apply调用。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// this 的指向</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getThis</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.key = <span class="string">'value'</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// case 1</span></span><br><span class="line"><span class="keyword">const</span> obj = &#123; getThis &#125;</span><br><span class="line">obj.getThis() <span class="comment">// obj</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// case 2</span></span><br><span class="line">getThis() <span class="comment">// window or undefined ('use strict')</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// case 3</span></span><br><span class="line"><span class="keyword">const</span> x = <span class="keyword">new</span> getThis()</span><br><span class="line">x.key === <span class="string">'value'</span> <span class="comment">// true</span></span><br><span class="line"><span class="comment">// 如果显示的返回一个对象，this就不是我们期待的了</span></span><br><span class="line"><span class="keyword">var</span> MyClass = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = <span class="string">'sven'</span>;</span><br><span class="line">    <span class="keyword">return</span> &#123; <span class="comment">// 显示的返回一个对象</span></span><br><span class="line">        name: <span class="string">'anne'</span> </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> MyClass();</span><br><span class="line">alert ( obj.name ); <span class="comment">// 输出：anne</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// case 4</span></span><br><span class="line"><span class="keyword">const</span> obj = &#123;&#125;</span><br><span class="line">getThis.call(obj, ...args) <span class="comment">// obj</span></span><br><span class="line">getThis.apply(obj, args) <span class="comment">// obj</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// this丢失问题：onclick</span></span><br></pre></td></tr></table></figure>
-</li>
+<h2 id="哪些是可枚举属性"><a href="#哪些是可枚举属性" class="headerlink" title="哪些是可枚举属性"></a>哪些是可枚举属性</h2><h3 id="在-js-中基本包装类型的原型属性是不可枚举的。"><a href="#在-js-中基本包装类型的原型属性是不可枚举的。" class="headerlink" title="在 js 中基本包装类型的原型属性是不可枚举的。"></a>在 js 中基本包装类型的原型属性是不可枚举的。</h3><p>例如 <code>Object</code>、<code>Array</code>、<code>Number</code>、<code>Boolean</code>、<code>Date</code>、<code>Math</code> 、<code>String</code>、<code>RegExp</code> 等。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = <span class="keyword">new</span> <span class="built_in">Array</span>();</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Array: '</span>, <span class="built_in">Array</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Array(): '</span>, <span class="built_in">Array</span>());</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'arr: '</span>, arr);</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> key <span class="keyword">in</span> arr) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`arr.<span class="subst">$&#123;key&#125;</span> = <span class="subst">$&#123;arr[key]&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> num = <span class="keyword">new</span> <span class="built_in">Number</span>();</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Number: '</span>, <span class="built_in">Number</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Number(): '</span>, <span class="built_in">Number</span>());</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'num: '</span>, num);</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> key <span class="keyword">in</span> num) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`num.<span class="subst">$&#123;key&#125;</span> = <span class="subst">$&#123;num[key]&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/js-enumerable-prop1.png" alt="js 中基本包装类型的原型属性不可枚举"></p>
+<p><code>arr</code> 和 <code>num</code> 的 <code>__proto__</code> 上都有属性, 但是输出结果是空。这是因为它们的内置的属性是不可枚举的，所以不能被 <code>for…in</code> 访问到。</p>
+<h3 id="obj-propertyIsEnumerable-prop"><a href="#obj-propertyIsEnumerable-prop" class="headerlink" title="obj.propertyIsEnumerable(prop)"></a>obj.propertyIsEnumerable(prop)</h3><p><code>Object</code> 对象的 <code>propertyIsEnumerable()</code> 方法可以判断某个属性是否是此对象的可枚举属性。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123; <span class="attr">name</span>: <span class="string">'Shie'</span>, <span class="attr">age</span>: <span class="number">25</span> &#125;;</span><br><span class="line"><span class="built_in">Object</span>.prototype.sex = <span class="string">'female'</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> obj) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`obj.<span class="subst">$&#123;key&#125;</span> isEnumerable: <span class="subst">$&#123;obj.propertyIsEnumerable(key)&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出结果：</span></span><br><span class="line"><span class="comment">// obj.name isEnumerable: true</span></span><br><span class="line"><span class="comment">// obj.age isEnumerable: true</span></span><br><span class="line"><span class="comment">// obj.sex isEnumerable: false</span></span><br></pre></td></tr></table></figure>
+<p><code>obj</code> 的 <code>name</code>、<code>age</code> 和 <code>sex</code> 三个属性都被遍历出来了，前两个是可枚举的，<code>sex</code> 是不可枚举属性，为什么也会被遍历呢？其实是这样的，<code>sex</code> 不是实例 <code>obj</code> 的属性而是 <code>Object</code> 原型上的属性，对于实例 <code>obj</code> 是不可枚举的，但是对于原型是可枚举的，而 <code>for…in</code> 循环是会遍历原型链上的可枚举属性的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(obj.__proto__.propertyIsEnumerable(<span class="string">'sex'</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.__proto__.propertyIsEnumerable(<span class="string">'toString'</span>)); <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.__proto__.propertyIsEnumerable(<span class="string">'hasOwnProperty'</span>)); <span class="comment">// false</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.__proto__.propertyIsEnumerable(<span class="string">'propertyIsEnumerable'</span>)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<h2 id="枚举方法的区别"><a href="#枚举方法的区别" class="headerlink" title="枚举方法的区别"></a>枚举方法的区别</h2><ul>
+<li><code>for…in</code> 循环：遍历对象的每一个可枚举属性，包括对象本身具有的属性、通过 <code>Object.defineProperty()</code> 方法添加的可枚举属性和原型链上面的可枚举属性</li>
+<li><code>Object.keys()</code>：只遍历对象本身具有的属性和通过 <code>Object.defineProperty()</code> 方法添加的可枚举属性，不遍历原型链上的可枚举属性</li>
+<li><code>JSON.stringify()</code>：只序列化对象本身具有的属性和通过 <code>Object.defineProperty()</code> 方法添加的可枚举属性为 JSON 对象，不序列化原型链上的属性</li>
+<li><code>Object.getOwnPropertyNames()</code>：遍历对象本身具有的和通过 <code>Object.defineProperty()</code> 方法添加的所有属性（不论是否是可枚举的），不遍历原型链上的属性</li>
 </ul>
-<p><strong>call、apply区别：</strong> 参数不同</p>
-<p><strong>用途：</strong></p>
-<ol>
-<li>改变this指向；</li>
-<li>Function.prototype.bind；</li>
-<li>借用其他对象方法<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 用例2</span></span><br><span class="line"><span class="built_in">Function</span>.prototype.bind = <span class="function"><span class="keyword">function</span>(<span class="params"> context </span>) </span>&#123; </span><br><span class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>; <span class="comment">// 保存原函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="comment">// 返回一个新函数  </span></span><br><span class="line">        <span class="keyword">return</span> self.apply( context, <span class="built_in">arguments</span> );<span class="comment">// 执行新函数的时候，会把之前传入的context当做新函数体内的this</span></span><br><span class="line">    &#125; </span><br><span class="line">&#125;;</span><br><span class="line">varobj=&#123; </span><br><span class="line">    name: <span class="string">'sven'</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> func = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; </span><br><span class="line">    alert ( <span class="keyword">this</span>.name ); <span class="comment">// 输出：sven</span></span><br><span class="line">&#125;.bind( obj);</span><br><span class="line">func();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用例3</span></span><br><span class="line"><span class="comment">// els 上没有 forEach 方法，可以通过 call 来借用 Array.prototype.forEach</span></span><br><span class="line"><span class="keyword">const</span> els = <span class="built_in">document</span>.querySelectorAll(<span class="string">'.some-selector'</span>)</span><br><span class="line">[].forEach.call(els, el =&gt; &#123;</span><br><span class="line">    <span class="comment">// Do something</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="闭包和高阶函数"><a href="#闭包和高阶函数" class="headerlink" title="闭包和高阶函数"></a>闭包和高阶函数</h2><h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><p>闭包的形成与变量的作用域以及变量的生存周期密切相关<br><strong>变量的作用域：</strong> 就是指变量的有效范围。全局变量和局部变量(函数内var关键字声明)。</p>
-<p><strong>生存周期：</strong></p>
-<ul>
-<li>全局变量的生存周期当然是永久的，除非我们主动销毁这个全局变量。</li>
-<li>在函数内用 var 关键字声明的局部变量，当退出函数时，这些局部变量即失去了它们的价值，它们都会随着函数调用的结束而被销毁。</li>
-</ul>
-<p><strong>闭包</strong>就是内部函数引用了外部函数的局部变量，当外部函数执行完毕时，局部变量不被销毁。</p>
-<p><strong>闭包的作用</strong></p>
-<ol>
-<li>封装变量</li>
-<li>延续局部变量的寿命</li>
-</ol>
-<h3 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h3><p>高阶函数是指至少满足下列条件之一的函数。</p>
-<ul>
-<li>函数可以作为参数被传递；</li>
-<li>函数可以作为返回值输出。</li>
-</ul>
-<p>JS 中函数是一等对象，可以作为参数被传递，也可以作为返回值输出。 显然满足高阶函数的条件。</p>
-<h4 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h4><p>参数传递：</p>
-<ul>
-<li>回调函数（异步）</li>
-<li>Array.prototype.sort</li>
-</ul>
-<p>返回值输出：</p>
-<ul>
-<li>判断数据类型</li>
-<li>getSingle（单例模式）</li>
+<p>举个 🌰<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Enumer</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.a = <span class="string">'我是对象本身就有的属性'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Enumer.prototype = &#123;</span><br><span class="line">  <span class="keyword">constructor</span>: Enumer,</span><br><span class="line">  b: '我是通过原型对象挂载的属性'</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const enumerObj = new Enumer();</span><br><span class="line"></span><br><span class="line">Object.defineProperty(enumerObj, 'c', &#123;</span><br><span class="line">  value: <span class="string">'我是通过 Object.defineProperty 方法添加的可枚举属性'</span>,</span><br><span class="line">  enumerable: <span class="literal">true</span> <span class="comment">// 可枚举</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">Object</span>.defineProperty(enumerObj, <span class="string">'d'</span>, &#123;</span><br><span class="line">  value: <span class="string">'我是通过 Object.defineProperty 方法添加的不可枚举属性'</span>,</span><br><span class="line">  enumerable: <span class="literal">false</span> <span class="comment">// 不可枚举</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'enumerObj: '</span>, enumerObj);</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.propertyIsEnumerable()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> key <span class="keyword">in</span> enumerObj) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'for…in: '</span>, <span class="string">`enumerObj.<span class="subst">$&#123;key&#125;</span> = <span class="subst">$&#123;enumerObj[key]&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Object.keys(): '</span>, <span class="built_in">Object</span>.keys(enumerObj));</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'JSON.stringify(): '</span>, <span class="built_in">JSON</span>.stringify(enumerObj));</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'JSON.getOwnPropertyNames(): '</span>, <span class="built_in">Object</span>.getOwnPropertyNames(enumerObj));</span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/js-enumerable-prop2.png" alt="枚举方法的区别"></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://blog.csdn.net/mrhaoxiaojun/article/details/70847444" target="_blank" rel="noopener">JavaScript中的可枚举属性与不可枚举属性</a></li>
+<li><a href="https://blog.csdn.net/it_hlm/article/details/79555118" target="_blank" rel="noopener">js中的枚举和不可枚举</a></li>
+<li><a href="https://www.cnblogs.com/lxk0301/p/7235319.html" target="_blank" rel="noopener">可枚举属性和不可枚举属性（for…in循环和Objec.keys()和Object.getOwnPropertyNames()）</a></li>
 </ul>
 
       
@@ -492,7 +464,7 @@
           
             <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
           
-            <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
+            <a href="/tags/可枚举属性/" rel="tag"># 可枚举属性</a>
           
         </div>
       
@@ -505,8 +477,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/17/my-first-blog/" rel="next" title="随想">
-                <i class="fa fa-chevron-left"></i> 随想
+              <a href="/2018/09/01/sort-algorithm/" rel="next" title="排序算法">
+                <i class="fa fa-chevron-left"></i> 排序算法
               </a>
             
           </div>
@@ -514,10 +486,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/20/js-clear-timer/" rel="prev" title="js清除定时器">
-                js清除定时器 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -684,7 +652,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#面向对象"><span class="nav-number">1.</span> <span class="nav-text">面向对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#this、call-和-apply"><span class="nav-number">2.</span> <span class="nav-text">this、call 和 apply</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#闭包和高阶函数"><span class="nav-number">3.</span> <span class="nav-text">闭包和高阶函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#闭包"><span class="nav-number">3.1.</span> <span class="nav-text">闭包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高阶函数"><span class="nav-number">3.2.</span> <span class="nav-text">高阶函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用场景"><span class="nav-number">3.2.1.</span> <span class="nav-text">使用场景</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#哪些是可枚举属性"><span class="nav-number">1.</span> <span class="nav-text">哪些是可枚举属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在-js-中基本包装类型的原型属性是不可枚举的。"><span class="nav-number">1.1.</span> <span class="nav-text">在 js 中基本包装类型的原型属性是不可枚举的。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#obj-propertyIsEnumerable-prop"><span class="nav-number">1.2.</span> <span class="nav-text">obj.propertyIsEnumerable(prop)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举方法的区别"><span class="nav-number">2.</span> <span class="nav-text">枚举方法的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
